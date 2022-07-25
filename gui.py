@@ -2,7 +2,10 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import askokcancel, WARNING
+from database import DataBase
 from formulario import Formulario
+import mysql.connector
+
 class center_mixin:
     def center(self):
         self.update()
@@ -34,7 +37,8 @@ class inicio(Tk, center_mixin):
         Button(opciones, text="EDITAR").grid(row=2,column=0,pady=5,padx=5)
 
         Button(opciones, text="BORRAR").grid(row=3,column=0,pady=5,padx=5)
-
+    
+    
         vista= Frame(raiz)
         vista.grid(row=0,column=1)
 
@@ -54,6 +58,12 @@ class inicio(Tk, center_mixin):
         scroll=ttk.Scrollbar(vista,orient=VERTICAL,command=lista.yview)
         scroll.grid(row=1, column=1,sticky=(N,S))
         lista['yscrollcommand']=scroll.set
+
+        myvista=DataBase()
+        datos=myvista.vistadb()
+        for i in datos:
+            lista.insert('','end',value=i)
+
     
     def borrar(self):
         paciente=self.lista.focus()
